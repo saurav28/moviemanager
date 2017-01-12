@@ -1,0 +1,11 @@
+@CHARSET "ISO-8859-1";
+#addmoviediv{
+opacity:0.92;
+position: absolute;
+top: 0px;
+left: 0px;
+height: 100%;
+width: 100%;
+background: #000;
+display: none;
+}
