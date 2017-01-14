@@ -21,15 +21,22 @@
     <table id="table_id" class="display">
     <thead>	
         <tr>
-            <th>Movie Name</th>
-            <th>Movie Year</th>
+        	<th>My Ranking</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Rating</th>
+            <th>Director</th>
+            
         </tr>
     </thead>
     <tbody>
     	<c:forEach items="${movieslist}" var="movie">
         <tr>
+        	<td>${movie.ranking}</td>
             <td>${movie.name}</td>
             <td>${movie.year}</td>
+            <td>${movie.rating}</td>
+            <td>${movie.director}</td>
         </tr>
        
         </c:forEach>
@@ -54,6 +61,14 @@
 <label>Director: <span>*</span></label>
 <br/>
 <input type="text" id="director" placeholder="director"/><br/>
+<br/>
+<label>Rating: <span>*</span></label>
+<br/>
+<input type="text" id="rating" placeholder="rating"/><br/>
+<br/>
+<label>Ranking: <span>*</span></label>
+<br/>
+<input type="text" id="ranking" placeholder="ranking"/><br/>
 <br/>
 <input type="button" id="send" value="Send"/>
 
@@ -87,20 +102,28 @@ $("#send").click(function() {
 var name = $("#name").val();
 var year = $("#year").val();
 var director = $("#director").val();
+var rating = $("#rating").val();
+var ranking = $("#ranking").val();
 
-if (name == "" || year == "" || director == ""){
+if (name == "" || year == "" || director == "" || rating == "" || ranking == ""){
 alert("Please Fill All Fields");
 }else{
 
 $("#addmoviediv").css("display", "none");
 $('#table_id').dataTable().fnAddData( [
 	   name,
-    year
+    year,
+    director,
+    rating,
+    ranking
     ] );
     
 var moviedata = { 
 	       moviename : name,
-	       movieyear : year
+	       movieyear : year,
+	       moviedirector : director,
+	       movierating : rating,
+	       movieranking : ranking
 	}
     
 $.ajax({

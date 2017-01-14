@@ -1,5 +1,6 @@
 package springapp.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -43,10 +44,14 @@ public class MovieController{
 	
 	@RequestMapping(value="/addmovie", method =RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView addMovie(@RequestParam("moviename") String name, @RequestParam("movieyear") String year ){
+	public ModelAndView addMovie(@RequestParam("moviename") String name, @RequestParam("movieyear") String year , @RequestParam("moviedirector") String
+			director, @RequestParam("movierating") float rating , @RequestParam("movieranking") int ranking){
 		Movies movies = new Movies();
 		movies.setName(name);
 		movies.setYear(year);
+		movies.setDirector(director);
+		movies.setRating(rating);
+		movies.setRanking(ranking);
 		DbManager.getInstance().addMovie(movies);
 		return new ModelAndView("hello.jsp");
 	}

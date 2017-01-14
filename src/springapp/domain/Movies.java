@@ -10,6 +10,33 @@ public class Movies {
 	
 	public String name;
 	public String year;
+	public String director;
+	public float rating;
+	public int ranking;
+	public int getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
+
+	public String getDirector() {
+		return director;
+	}
+
+	public void setDirector(String director) {
+		this.director = director;
+	}
+
+	public float getRating() {
+		return rating;
+	}
+
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
+
 	public String getYear() {
 		return year;
 	}
