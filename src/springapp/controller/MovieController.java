@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -40,10 +41,22 @@ public class MovieController{
 		return "hello";
 	}
 	
-//	@RequestMapping(value="/addmovie")
-//	@ResponseBody
-//	public ModelAndView addMovie(){
-//		return new ModelAndView("hello.jsp");
-//	}
+	@RequestMapping(value="/addmovie", method =RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView addMovie(@RequestParam("moviename") String name, @RequestParam("movieyear") String year ){
+		Movies movies = new Movies();
+		movies.setName(name);
+		movies.setYear(year);
+		DbManager.getInstance().addMovie(movies);
+		return new ModelAndView("hello.jsp");
+	}
+	
+	@RequestMapping(value="/deletemovie", method =RequestMethod.POST)
+	public ModelAndView deleteMovie(@RequestParam("moviename") String name){
+		Movies movies = new Movies();
+		movies.setName(name);
+		DbManager.getInstance().removeMovie(movies);
+		return new ModelAndView("hello.jsp");
+	}
 
 }

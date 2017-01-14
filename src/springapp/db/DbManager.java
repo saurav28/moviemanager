@@ -6,6 +6,10 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import com.mongodb.WriteResult;
 
 import springapp.domain.Movies;
 /**
@@ -71,7 +75,13 @@ public class DbManager {
 	 */
 	public boolean removeMovie(Movies movie) {
 		try {
-			mongoOperation.remove(movie);
+			//Construct a query to fetch the movie
+			Query query = new Query();
+			query.addCriteria(Criteria.where("name").is(movie.name));
+			
+			WriteResult result = mongoOperation.remove(query,Movies.class);
+			
+			
 			return true;
 			}catch(Exception e){
 				//catch if any exception

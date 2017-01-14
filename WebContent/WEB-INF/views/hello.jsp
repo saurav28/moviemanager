@@ -105,7 +105,7 @@ var moviedata = {
     
 $.ajax({
     type: "POST",
-    url: "movies/addmovie",
+    url: "/springapp/movies/addmovie.htm",
     data: moviedata,
     success: function (result) {
         // do something.
@@ -142,7 +142,27 @@ function addrow() {
 }
 
 function delrow() {
-	$('#table_id').DataTable().row('.selected').remove().draw( false );
+	var row = $('#table_id').DataTable().row('.selected');
+	
+	var data = row.data();
+	var name = data[0];
+	
+	var moviedata = {
+			moviename : name
+	}
+	//data[0];
+	row.remove().draw( false );
+	$.ajax({
+	    type: "POST",
+	    url: "/springapp/movies/deletemovie.htm",
+	    data: moviedata,
+	    success: function (result) {
+	        // do something.
+	    },
+	    error: function (result) {
+	        // do something.
+	    }
+	});
 }
 
 </script>
