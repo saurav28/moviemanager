@@ -61,7 +61,11 @@ public class Movies {
 		this.name = name;
 	}
 
-	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return this.ranking > ((Movies)obj).ranking ;
+	}
 	
 	@Override
 	public String toString() {

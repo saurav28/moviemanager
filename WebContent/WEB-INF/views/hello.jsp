@@ -8,15 +8,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link rel="stylesheet" href="main.css" />
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+
+  
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 
+
+
 </head>
 <body>
+
  <h1>Welcome to My movie manager</h1>
     <h3>My ranking of movies</h3>
     <input type="button" value="Add a new movie" id="addbtn" />
     <input type="button" value="Select and remove a movie" id="delbtn" />
+    <input type="button" value="Select and Edit" id="updatebtn" />
     <br><br>
     <table id="table_id" class="display">
     <thead>	
@@ -71,6 +78,7 @@
 <input type="text" id="ranking" placeholder="ranking"/><br/>
 <br/>
 <input type="button" id="send" value="Send"/>
+<input type="button" id="cancel" value="cancel"/>
 
 <br/>
 </form>
@@ -78,11 +86,12 @@
 
 </body>
 <script>
-
+var update = false; // global variable to indicate whether the request is for update or add
 $(document).ready( function () {
     var table = $('#table_id').DataTable();
     $('#addbtn').click(addrow);
     $('#delbtn').click(delrow);
+    $('#updatebtn').click(updaterow);
      
     
     table.on( 'click', 'tr', function () {
@@ -94,8 +103,15 @@ $(document).ready( function () {
             $(this).addClass('selected');
         }
     } );
+    
+   
 } );
 
+//Handle cancel button click event
+
+$("#cancel").click(function() {
+	location.reload();
+})
 
 //Contact form popup send-button click event.
 $("#send").click(function() {
@@ -109,14 +125,7 @@ if (name == "" || year == "" || director == "" || rating == "" || ranking == "")
 alert("Please Fill All Fields");
 }else{
 
-$("#addmoviediv").css("display", "none");
-$('#table_id').dataTable().fnAddData( [
-	   name,
-    year,
-    director,
-    rating,
-    ranking
-    ] );
+
     
 var moviedata = { 
 	       moviename : name,
@@ -125,8 +134,42 @@ var moviedata = {
 	       movierating : rating,
 	       movieranking : ranking
 	}
-    
+$("#addmoviediv").css("display", "none");
+if(update){
+
+$('#table_id').dataTable().fnUpdate( [
+                                      ranking,
+                             		 name,
+                             	    year,
+                             	    rating,
+                             	    director
+	                            	    ] );
+	
 $.ajax({
+    type: "POST",
+    url: "/springapp/movies/updatemovie.htm",
+    data: moviedata,
+    success: function (result) {
+        // do something.
+    },
+    error: function (result) {
+        // do something.
+    }
+});
+update =false;
+}else {
+	
+	
+	
+	$('#table_id').dataTable().fnAddData( [
+		 ranking,
+		 name,
+	    year,
+	    rating,
+	    director
+	    ] );
+	
+	$.ajax({
     type: "POST",
     url: "/springapp/movies/addmovie.htm",
     data: moviedata,
@@ -137,6 +180,8 @@ $.ajax({
         // do something.
     }
 });
+
+} 
 
 }
 });
@@ -158,17 +203,30 @@ function addrow() {
                 // do something.
           //  }
       //  });
-	  
+	 
 	$("#addmoviediv").css("display", "block");
 
 
+}
+
+function updaterow() {
+	 //get the date from table row and assign it to the contact form
+	 
+	var data = $('#table_id').DataTable().row('.selected').data();
+	$("#name").val(data[1]);
+	$("#year").val(data[2]);
+	$("#director").val(data[4]);
+	$("#rating").val(data[3]);
+	$("#ranking").val(data[0]);
+	update = true ; //making the update flag true since we want to update an entry
+	$("#addmoviediv").css("display", "block");
 }
 
 function delrow() {
 	var row = $('#table_id').DataTable().row('.selected');
 	
 	var data = row.data();
-	var name = data[0];
+	var name = data[1];
 	
 	var moviedata = {
 			moviename : name

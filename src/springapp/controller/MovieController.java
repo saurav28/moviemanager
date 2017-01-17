@@ -63,5 +63,18 @@ public class MovieController{
 		DbManager.getInstance().removeMovie(movies);
 		return new ModelAndView("hello.jsp");
 	}
+	
+	@RequestMapping(value="/updatemovie", method =RequestMethod.POST)
+	public ModelAndView updateMovie(@RequestParam("moviename") String name,@RequestParam("movieyear") String year , @RequestParam("moviedirector") String
+			director, @RequestParam("movierating") float rating , @RequestParam("movieranking") int ranking){
+		Movies movies = new Movies();
+		movies.setName(name);
+		movies.setYear(year);
+		movies.setDirector(director);
+		movies.setRating(rating);
+		movies.setRanking(ranking);
+		DbManager.getInstance().updateMovie(movies);
+		return new ModelAndView("hello.jsp");
+	}
 
 }

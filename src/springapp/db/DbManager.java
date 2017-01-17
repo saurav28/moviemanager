@@ -1,6 +1,8 @@
 package springapp.db;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -50,6 +52,8 @@ public class DbManager {
 	 */
 	public List<Movies> getMovies() {
 		List<Movies> movieList = mongoOperation.findAll(Movies.class);
+		//sort the list according to rank
+		movieList.sort(Comparator.comparing(Movies::getRanking));
 		return movieList;
 	}
 	/**
@@ -61,6 +65,31 @@ public class DbManager {
 		
 		try {
 		mongoOperation.insert(movie);
+		return true;
+		}catch(Exception e){
+			//catch if any exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * Adds the movie to the database
+	 * @param movei
+	 * @return
+	 */
+	public boolean updateMovie(Movies movie) {
+		
+		try {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("name").is(movie.name));
+		Movies fetchedMovie = mongoOperation.findOne(query, Movies.class);
+		fetchedMovie.setName(movie.name);
+		fetchedMovie.setDirector(movie.director);
+		fetchedMovie.setRating(movie.rating);
+		fetchedMovie.setYear(movie.year);
+		fetchedMovie.setRanking(movie.ranking);
+		mongoOperation.save(fetchedMovie);
 		return true;
 		}catch(Exception e){
 			//catch if any exception
