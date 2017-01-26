@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -52,27 +53,29 @@ public class MovieController{
 		movies.setDirector(director);
 		movies.setRating(rating);
 		movies.setRanking(ranking);
+		movies.setId(new ObjectId());
 		DbManager.getInstance().addMovie(movies);
 		return new ModelAndView("hello.jsp");
 	}
 	
 	@RequestMapping(value="/deletemovie", method =RequestMethod.POST)
-	public ModelAndView deleteMovie(@RequestParam("moviename") String name){
+	public ModelAndView deleteMovie(@RequestParam("movieid") String id){
 		Movies movies = new Movies();
-		movies.setName(name);
+		movies.setId(new ObjectId(id));
 		DbManager.getInstance().removeMovie(movies);
 		return new ModelAndView("hello.jsp");
 	}
 	
 	@RequestMapping(value="/updatemovie", method =RequestMethod.POST)
 	public ModelAndView updateMovie(@RequestParam("moviename") String name,@RequestParam("movieyear") String year , @RequestParam("moviedirector") String
-			director, @RequestParam("movierating") float rating , @RequestParam("movieranking") int ranking){
+			director, @RequestParam("movierating") float rating , @RequestParam("movieid") String id ){
 		Movies movies = new Movies();
 		movies.setName(name);
 		movies.setYear(year);
 		movies.setDirector(director);
 		movies.setRating(rating);
-		movies.setRanking(ranking);
+		movies.setId(new ObjectId(id));
+		//movies.setRanking(ranking);
 		DbManager.getInstance().updateMovie(movies);
 		return new ModelAndView("hello.jsp");
 	}

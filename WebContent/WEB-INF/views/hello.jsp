@@ -28,22 +28,22 @@
     <table id="table_id" class="display">
     <thead>	
         <tr>
-        	<th>My Ranking</th>
             <th>Name</th>
             <th>Year</th>
             <th>Rating</th>
             <th>Director</th>
+            <th>Id</th>
             
         </tr>
     </thead>
     <tbody>
     	<c:forEach items="${movieslist}" var="movie">
         <tr>
-        	<td>${movie.ranking}</td>
             <td>${movie.name}</td>
             <td>${movie.year}</td>
             <td>${movie.rating}</td>
             <td>${movie.director}</td>
+            <td>${movie.id}</td>
         </tr>
        
         </c:forEach>
@@ -88,12 +88,20 @@
 <script>
 var update = false; // global variable to indicate whether the request is for update or add
 $(document).ready( function () {
-    var table = $('#table_id').DataTable();
+    var table = $('#table_id').DataTable({
+    	 "order": [], //switch off the default sorting in data table
+    	 //http://stackoverflow.com/questions/4964388/is-there-a-way-to-disable-initial-sorting-for-jquery-datatables
+    	 "columnDefs": [
+            {
+                "targets": [ 4 ],
+                "visible": false,
+                "searchable": false
+            } ]
+    });
     $('#addbtn').click(addrow);
     $('#delbtn').click(delrow);
     $('#updatebtn').click(updaterow);
-     
-    
+   
     table.on( 'click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
@@ -121,7 +129,7 @@ var director = $("#director").val();
 var rating = $("#rating").val();
 var ranking = $("#ranking").val();
 
-if (name == "" || year == "" || director == "" || rating == "" || ranking == ""){
+if (name == "" || year == "" || director == "" || rating == ""){ //commenting out rating for now
 alert("Please Fill All Fields");
 }else{
 
@@ -136,19 +144,27 @@ var moviedata = {
 	}
 $("#addmoviediv").css("display", "none");
 if(update){
-
+	
+var index = $('#table_id').DataTable().row('.selected').index();
+var id = $('#table_id').DataTable().row('.selected').data()[4];
 $('#table_id').dataTable().fnUpdate( [
-                                      ranking,
                              		 name,
                              	    year,
                              	    rating,
                              	    director
-	                            	    ] );
-	
+	                            	    ],index );
+
+var movieupdatedata = { 
+	       moviename : name,
+	       movieyear : year,
+	       moviedirector : director,
+	       movierating : rating,
+	       movieid : id
+	}
 $.ajax({
     type: "POST",
     url: "/springapp/movies/updatemovie.htm",
-    data: moviedata,
+    data: movieupdatedata,
     success: function (result) {
         // do something.
     },
@@ -162,7 +178,7 @@ update =false;
 	
 	
 	$('#table_id').dataTable().fnAddData( [
-		 ranking,
+
 		 name,
 	    year,
 	    rating,
@@ -213,11 +229,11 @@ function updaterow() {
 	 //get the date from table row and assign it to the contact form
 	 
 	var data = $('#table_id').DataTable().row('.selected').data();
-	$("#name").val(data[1]);
-	$("#year").val(data[2]);
-	$("#director").val(data[4]);
-	$("#rating").val(data[3]);
-	$("#ranking").val(data[0]);
+	$("#name").val(data[0]);
+	$("#year").val(data[1]);
+	$("#director").val(data[3]);
+	$("#rating").val(data[2]);
+	//$("#ranking").val(data[0]);
 	update = true ; //making the update flag true since we want to update an entry
 	$("#addmoviediv").css("display", "block");
 }
@@ -226,10 +242,10 @@ function delrow() {
 	var row = $('#table_id').DataTable().row('.selected');
 	
 	var data = row.data();
-	var name = data[1];
+	var id = data[4];
 	
 	var moviedata = {
-			moviename : name
+			movieid : id
 	}
 	//data[0];
 	row.remove().draw( false );

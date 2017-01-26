@@ -1,12 +1,13 @@
 package springapp.domain;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-@Document(collection = "movies")
+
 public class Movies {
 	
-	@Id
-	public String _id;
+	
+	public ObjectId _id;
 	
 	public String name;
 	public String year;
@@ -45,11 +46,11 @@ public class Movies {
 		this.year = year;
 	}
 
-	public String getId() {
+	public ObjectId getId() {
 		return _id;
 	}
 
-	public void setId(String _id) {
+	public void setId(ObjectId _id) {
 		this._id = _id;
 	}
 

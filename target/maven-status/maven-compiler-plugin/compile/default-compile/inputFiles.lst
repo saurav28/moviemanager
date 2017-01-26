@@ -1,4 +1,5 @@
 C:\WS\SpringApp\SpringApp\src\springapp\controller\MovieController.java
 C:\WS\SpringApp\SpringApp\src\springapp\db\DbManager.java
 C:\WS\SpringApp\SpringApp\src\springapp\db\SpringMongoConfig.java
-C:\WS\SpringApp\SpringApp\src\springapp\domain\Movie.java
+C:\WS\SpringApp\SpringApp\src\springapp\domain\Movies.java
+C:\WS\SpringApp\SpringApp\src\springapp\domain\RankedMovies.java
