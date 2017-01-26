@@ -151,7 +151,8 @@ $('#table_id').dataTable().fnUpdate( [
                              		 name,
                              	    year,
                              	    rating,
-                             	    director
+                             	    director,
+                             	    id
 	                            	    ],index );
 
 var movieupdatedata = { 
@@ -182,7 +183,8 @@ update =false;
 		 name,
 	    year,
 	    rating,
-	    director
+	    director,
+	    " "
 	    ] );
 	
 	$.ajax({
