@@ -46,13 +46,14 @@ public class MovieController{
 	@RequestMapping(value="/addmovie", method =RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView addMovie(@RequestParam("moviename") String name, @RequestParam("movieyear") String year , @RequestParam("moviedirector") String
-			director, @RequestParam("movierating") float rating , @RequestParam("movieranking") int ranking){
+			director, @RequestParam("movierating") float rating , @RequestParam("movieranking") int ranking , @RequestParam("movieurl") String url){
 		Movies movies = new Movies();
 		movies.setName(name);
 		movies.setYear(year);
 		movies.setDirector(director);
 		movies.setRating(rating);
 		movies.setRanking(ranking);
+		movies.setUrl(url);
 		movies.setId(new ObjectId());
 		DbManager.getInstance().addMovie(movies);
 		return new ModelAndView("hello.jsp");
@@ -68,12 +69,13 @@ public class MovieController{
 	
 	@RequestMapping(value="/updatemovie", method =RequestMethod.POST)
 	public ModelAndView updateMovie(@RequestParam("moviename") String name,@RequestParam("movieyear") String year , @RequestParam("moviedirector") String
-			director, @RequestParam("movierating") float rating , @RequestParam("movieid") String id ){
+			director, @RequestParam("movierating") float rating , @RequestParam("movieid") String id ,@RequestParam("movieurl") String url ){
 		Movies movies = new Movies();
 		movies.setName(name);
 		movies.setYear(year);
 		movies.setDirector(director);
 		movies.setRating(rating);
+		movies.setUrl(url);
 		movies.setId(new ObjectId(id));
 		//movies.setRanking(ranking);
 		DbManager.getInstance().updateMovie(movies);

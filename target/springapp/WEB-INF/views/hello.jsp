@@ -77,6 +77,10 @@
 <br/>
 <input type="text" id="ranking" placeholder="ranking"/><br/>
 <br/>
+<label>IMDB Link: <span>*</span></label>
+<br/>
+<input type="text" id="url" placeholder="url"/><br/>
+<br/>
 <input type="button" id="send" value="Send"/>
 <input type="button" id="cancel" value="cancel"/>
 
@@ -96,7 +100,19 @@ $(document).ready( function () {
                 "targets": [ 4 ],
                 "visible": false,
                 "searchable": false
-            } ]
+            },
+            {
+                "targets": [ 5 ],
+                "visible": false,
+                "searchable": false
+            },
+            {
+            	 "render": function ( data, type, row ) {
+                     return '<a href = "'+row[5]+'">data</a>';
+                 },
+                 "targets": 0
+            } 
+            ]
     });
     $('#addbtn').click(addrow);
     $('#delbtn').click(delrow);
@@ -151,7 +167,8 @@ $('#table_id').dataTable().fnUpdate( [
                              		 name,
                              	    year,
                              	    rating,
-                             	    director
+                             	    director,
+                             	    id
 	                            	    ],index );
 
 var movieupdatedata = { 
@@ -182,7 +199,8 @@ update =false;
 		 name,
 	    year,
 	    rating,
-	    director
+	    director,
+	    " "
 	    ] );
 	
 	$.ajax({
@@ -245,7 +263,7 @@ function delrow() {
 	var id = data[4];
 	
 	var moviedata = {
-			movienid : id
+			movieid : id
 	}
 	//data[0];
 	row.remove().draw( false );

@@ -33,6 +33,7 @@
             <th>Rating</th>
             <th>Director</th>
             <th>Id</th>
+            <th>IMDB Url</th>
             
         </tr>
     </thead>
@@ -44,6 +45,7 @@
             <td>${movie.rating}</td>
             <td>${movie.director}</td>
             <td>${movie.id}</td>
+            <td>${movie.url}</td>
         </tr>
        
         </c:forEach>
@@ -77,6 +79,10 @@
 <br/>
 <input type="text" id="ranking" placeholder="ranking"/><br/>
 <br/>
+<label>IMDB Link: <span>*</span></label>
+<br/>
+<input type="text" id="url" placeholder="url"/><br/>
+<br/>
 <input type="button" id="send" value="Send"/>
 <input type="button" id="cancel" value="cancel"/>
 
@@ -96,7 +102,19 @@ $(document).ready( function () {
                 "targets": [ 4 ],
                 "visible": false,
                 "searchable": false
-            } ]
+            },
+            {
+                "targets": [ 5 ],
+                "visible": false,
+                "searchable": false
+            },
+            {
+            	 "render": function ( data, type, row ) {
+                     return '<a href ="'+row[5]+'" target="_blank" >'+data+'</a>';
+                 },
+                 "targets": 0
+            } 
+            ]
     });
     $('#addbtn').click(addrow);
     $('#delbtn').click(delrow);
@@ -128,8 +146,9 @@ var year = $("#year").val();
 var director = $("#director").val();
 var rating = $("#rating").val();
 var ranking = $("#ranking").val();
+var url = $("#url").val();
 
-if (name == "" || year == "" || director == "" || rating == ""){ //commenting out rating for now
+if (name == "" || year == "" || director == "" || rating == "" || url == ""){ //commenting out rating for now
 alert("Please Fill All Fields");
 }else{
 
@@ -140,7 +159,8 @@ var moviedata = {
 	       movieyear : year,
 	       moviedirector : director,
 	       movierating : rating,
-	       movieranking : ranking
+	       movieranking : ranking,
+	       movieurl : url
 	}
 $("#addmoviediv").css("display", "none");
 if(update){
@@ -152,7 +172,8 @@ $('#table_id').dataTable().fnUpdate( [
                              	    year,
                              	    rating,
                              	    director,
-                             	    id
+                             	    id,
+                             	    url
 	                            	    ],index );
 
 var movieupdatedata = { 
@@ -160,7 +181,8 @@ var movieupdatedata = {
 	       movieyear : year,
 	       moviedirector : director,
 	       movierating : rating,
-	       movieid : id
+	       movieid : id,
+	       movieurl : url
 	}
 $.ajax({
     type: "POST",
@@ -184,6 +206,7 @@ update =false;
 	    year,
 	    rating,
 	    director,
+	    " ",
 	    " "
 	    ] );
 	

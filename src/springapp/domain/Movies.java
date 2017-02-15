@@ -12,6 +12,15 @@ public class Movies {
 	public String name;
 	public String year;
 	public String director;
+	public String url;
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public float rating;
 	public int ranking;
 	public int getRanking() {
