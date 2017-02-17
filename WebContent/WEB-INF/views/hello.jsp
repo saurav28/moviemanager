@@ -34,6 +34,7 @@
             <th>Director</th>
             <th>Id</th>
             <th>IMDB Url</th>
+            <th>Comments </th>
             
         </tr>
     </thead>
@@ -46,6 +47,7 @@
             <td>${movie.director}</td>
             <td>${movie.id}</td>
             <td>${movie.url}</td>
+            <td><textarea name="" id="" cols="45" rows="2"></textarea> </td>
         </tr>
        
         </c:forEach>
@@ -207,7 +209,7 @@ update =false;
 	    rating,
 	    director,
 	    " ",
-	    " "
+	    url
 	    ] );
 	
 	$.ajax({
