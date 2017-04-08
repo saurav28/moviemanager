@@ -5,13 +5,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>My Movie Manager</title>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link rel="stylesheet" href="main.css" />
+<!--  <link href="<c:url value="/resources/css/layout.css" />" rel="stylesheet"> -->
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
 
   
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 
 
@@ -34,7 +36,7 @@
             <th>Director</th>
             <th>Id</th>
             <th>IMDB Url</th>
-            <th>Comments </th>
+            
             
         </tr>
     </thead>
@@ -47,7 +49,7 @@
             <td>${movie.director}</td>
             <td>${movie.id}</td>
             <td>${movie.url}</td>
-            <td><textarea name="" id="" cols="45" rows="2"></textarea> </td>
+            
         </tr>
        
         </c:forEach>
@@ -95,7 +97,8 @@
 </body>
 <script>
 var update = false; // global variable to indicate whether the request is for update or add
-$(document).ready( function () {
+$(document).readytion () {
+	// 
     var table = $('#table_id').DataTable({
     	 "order": [], //switch off the default sorting in data table
     	 //http://stackoverflow.com/questions/4964388/is-there-a-way-to-disable-initial-sorting-for-jquery-datatables
@@ -118,8 +121,11 @@ $(document).ready( function () {
             } 
             ]
     });
+	
     $('#addbtn').click(addrow);
+    
     $('#delbtn').click(delrow);
+    
     $('#updatebtn').click(updaterow);
    
     table.on( 'click', 'tr', function () {
@@ -230,26 +236,9 @@ update =false;
 });
 // adds a row
 function addrow() {
-   // $('#table_id').dataTable().fnAddData( [
-    //   " ",
-      //  " "
-     //   ] );
-    
-	  //$.ajax({
-        //    type: "POST",
-        //    url: "addmovie",
-        //    data: loginData,
-        //    success: function (result) {
-          //      // do something.
-         //   },
-        //    error: function (result) {
-                // do something.
-          //  }
-      //  });
-	 
+	
 	$("#addmoviediv").css("display", "block");
-
-
+	
 }
 
 function updaterow() {
